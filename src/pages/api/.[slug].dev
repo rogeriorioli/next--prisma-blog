@@ -1,0 +1,15 @@
+import { PrismaClient } from '@prisma/client'
+import { NextApiRequest, NextApiResponse } from 'next';
+
+
+const prisma = new PrismaClient()
+
+export default async function getPostSlug(req: NextApiRequest, res: NextApiResponse) {
+    const slug = req.query
+    const post = await prisma.post.findFirst({where : slug})
+        if(!post) {
+            res.status(409).json({message : "no post avaliable"})
+            return res.end()
+        }
+        res.status(200).json(post)
+    };
